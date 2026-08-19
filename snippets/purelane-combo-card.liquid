@@ -1,0 +1,149 @@
+{%- comment -%}
+  Renders a Purelane Best-selling Combo Card.
+
+  Accepts:
+  - combo_product: {Object} Optional Shopify product object
+  - title: {String} Combo title
+  - count_label: {String} e.g. "3 products"
+  - description: {String} Includes text / description
+  - price: {String} Formatted price
+  - compare_at_price: {String} Formatted compare at price
+  - save_label: {String} e.g. "Save ₹398"
+  - save_badge: {String} e.g. "You save ₹398"
+  - flag_badge: {String} e.g. "Most popular"
+  - is_hero: {Boolean} If true, highlights as hero-combo (golden border + primary button)
+  - cta_text: {String} Button text (default: "Shop bundle")
+  - cta_url: {String} Link URL
+  - fine_print: {String} Footer text (default: "Inclusive of all taxes · COD available")
+  - item1_text: {String} Item 1 benefit caption
+  - item1_sprite: {String} Sprite class e.g. "p-kitchen"
+  - item1_image: {Object} Image object (optional)
+  - item2_text: {String} Item 2 benefit caption
+  - item2_sprite: {String} Sprite class e.g. "p-dish"
+  - item2_image: {Object} Image object (optional)
+  - item2_is_tile: {Boolean} If true, displays the dashed icon tile
+  - item3_text: {String} Item 3 benefit caption
+  - item3_sprite: {String} Sprite class e.g. "p-tap"
+  - item3_image: {Object} Image object (optional)
+
+  Usage:
+  {% render 'purelane-combo-card', ... %}
+{%- endcomment -%}
+
+{%- liquid
+  assign card_title = title | default: combo_product.title
+  assign card_url = cta_url | default: combo_product.url | default: '#bundles'
+  assign card_cta_text = cta_text | default: 'Shop bundle'
+  assign card_fine_print = fine_print | default: 'Inclusive of all taxes · COD available'
+
+  if combo_product != blank
+    if price == blank
+      assign card_price = combo_product.price | money_without_trailing_zeros
+    else
+      assign card_price = price
+    endif
+    if compare_at_price == blank and combo_product.compare_at_price > combo_product.price
+      assign card_compare = combo_product.compare_at_price | money_without_trailing_zeros
+    else
+      assign card_compare = compare_at_price
+    endif
+  else
+    assign card_price = price
+    assign card_compare = compare_at_price
+  endif
+-%}
+
+<article class="glass combo{% if is_hero %} hero-combo{% endif %}">
+  <div class="tray">
+    {%- if save_badge != blank -%}
+      <span class="save">{{ save_badge }}</span>
+    {%- endif -%}
+
+    {%- if flag_badge != blank -%}
+      <span class="flag">{{ flag_badge }}</span>
+    {%- endif -%}
+
+    <div class="stack">
+      {%- comment -%} Item 1 {%- endcomment -%}
+      <span class="it">
+        {%- if item1_image != blank -%}
+          {{ item1_image | image_url: width: 150 | image_tag: class: 'pimg', loading: 'lazy', alt: item1_text }}
+        {%- elsif item1_sprite != blank -%}
+          <span class="pimg {{ item1_sprite }}" role="img" aria-label="{{ item1_text }}"></span>
+        {%- else -%}
+          <span class="pimg p-kitchen" role="img" aria-label="{{ item1_text }}"></span>
+        {%- endif -%}
+        <span>{{ item1_text }}</span>
+      </span>
+
+      <span class="plus" aria-hidden="true">+</span>
+
+      {%- comment -%} Item 2 {%- endcomment -%}
+      <span class="it">
+        {%- if item2_is_tile -%}
+          <span class="tile" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/>
+              <path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/>
+            </svg>
+          </span>
+        {%- elsif item2_image != blank -%}
+          {{ item2_image | image_url: width: 150 | image_tag: class: 'pimg', loading: 'lazy', alt: item2_text }}
+        {%- elsif item2_sprite != blank -%}
+          <span class="pimg {{ item2_sprite }}" role="img" aria-label="{{ item2_text }}"></span>
+        {%- else -%}
+          <span class="pimg p-dish" role="img" aria-label="{{ item2_text }}"></span>
+        {%- endif -%}
+        <span>{{ item2_text }}</span>
+      </span>
+
+      {%- if item3_text != blank or item3_sprite != blank or item3_image != blank -%}
+        <span class="plus" aria-hidden="true">+</span>
+
+        {%- comment -%} Item 3 {%- endcomment -%}
+        <span class="it">
+          {%- if item3_image != blank -%}
+            {{ item3_image | image_url: width: 150 | image_tag: class: 'pimg', loading: 'lazy', alt: item3_text }}
+          {%- elsif item3_sprite != blank -%}
+            <span class="pimg {{ item3_sprite }}" role="img" aria-label="{{ item3_text }}"></span>
+          {%- else -%}
+            <span class="pimg p-tap" role="img" aria-label="{{ item3_text }}"></span>
+          {%- endif -%}
+          <span>{{ item3_text }}</span>
+        </span>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="body">
+    <h3>{{ card_title }}</h3>
+    {%- if count_label != blank -%}
+      <div class="cnt">{{ count_label }}</div>
+    {%- endif -%}
+
+    {%- if description != blank -%}
+      <p class="inc">{{ description }}</p>
+    {%- endif -%}
+
+    <div class="prow">
+      <strong>{{ card_price }}</strong>
+      {%- if card_compare != blank -%}
+        <s>{{ card_compare }}</s>
+      {%- endif -%}
+      {%- if save_label != blank -%}
+        <em>{{ save_label }}</em>
+      {%- endif -%}
+    </div>
+
+    {%- if card_fine_print != blank -%}
+      <div class="fine">{{ card_fine_print }}</div>
+    {%- endif -%}
+
+    <a class="btn {% if is_hero %}btn-primary{% else %}btn-ghost{% endif %}" href="{{ card_url }}">
+      {{ card_cta_text }}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h13m-5-6 6 6-6 6"/>
+      </svg>
+    </a>
+  </div>
+</article>

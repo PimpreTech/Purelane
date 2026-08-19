@@ -1,0 +1,481 @@
+{{ 'purelane-combos.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Purelane Best-Selling Combos Section (Section 03)
+  Renders a horizontal scrolling rail of pre-built bundle combo boxes.
+{%- endcomment -%}
+
+{%- liquid
+  assign section_id = section.id
+  assign kicker = section.settings.kicker
+  assign title = section.settings.title
+  assign show_rule = section.settings.show_rule
+  assign lede = section.settings.lede
+  assign swipecue_text = section.settings.swipecue_text
+  assign railnote = section.settings.railnote
+  assign enable_animations = section.settings.enable_animations
+-%}
+
+<div
+  id="PurelaneCombos-{{ section_id }}"
+  class="purelane-combos"
+  data-section-id="{{ section_id }}"
+  data-section-type="purelane-combos"
+>
+  <div class="purelane-combos__wrap">
+    {%- if kicker != blank or title != blank or lede != blank -%}
+      <div class="purelane-combos__head rv{% if enable_animations == false %} in{% endif %}">
+        {%- if kicker != blank -%}
+          <span class="purelane-combos__kicker">{{ kicker }}</span>
+        {%- endif -%}
+        {%- if title != blank -%}
+          <h2 class="purelane-combos__title">{{ title }}</h2>
+        {%- endif -%}
+        {%- if show_rule -%}
+          <div class="purelane-combos__rule" aria-hidden="true">
+            <i></i>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/>
+              <path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/>
+            </svg>
+            <i></i>
+          </div>
+        {%- endif -%}
+        {%- if lede != blank -%}
+          <p class="purelane-combos__lede">{{ lede }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="comborail rv{% if enable_animations == false %} in{% endif %}" role="region" aria-label="{{ title | default: 'Best selling combos' }}" tabindex="0">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {% render 'purelane-combo-card',
+            combo_product: block.settings.combo_product,
+            title: block.settings.title,
+            count_label: block.settings.count_label,
+            description: block.settings.description,
+            price: block.settings.price,
+            compare_at_price: block.settings.compare_at_price,
+            save_label: block.settings.save_label,
+            save_badge: block.settings.save_badge,
+            flag_badge: block.settings.flag_badge,
+            is_hero: block.settings.is_hero,
+            cta_text: block.settings.cta_text,
+            cta_url: block.settings.cta_url,
+            fine_print: block.settings.fine_print,
+            item1_text: block.settings.item1_text,
+            item1_sprite: block.settings.item1_sprite,
+            item1_image: block.settings.item1_image,
+            item2_text: block.settings.item2_text,
+            item2_sprite: block.settings.item2_sprite,
+            item2_image: block.settings.item2_image,
+            item2_is_tile: block.settings.item2_is_tile,
+            item3_text: block.settings.item3_text,
+            item3_sprite: block.settings.item3_sprite,
+            item3_image: block.settings.item3_image
+          %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Default 5 Presets matching reference {%- endcomment -%}
+        {% render 'purelane-combo-card',
+          title: 'Kitchen essentials',
+          count_label: '3 products',
+          description: 'Includes: Foaming Kitchen Cleaner, Dishwash Gel & Tap Cleaner. Everything for a sparkling kitchen, no need to pick separately.',
+          price: '₹499',
+          compare_at_price: '₹897',
+          save_label: 'Save ₹398',
+          save_badge: 'You save ₹398',
+          flag_badge: 'Most popular',
+          is_hero: false,
+          cta_text: 'Shop bundle',
+          cta_url: '#bundles',
+          item1_text: 'Cuts grease instantly',
+          item1_sprite: 'p-kitchen',
+          item2_text: 'Squeaky clean dishes',
+          item2_sprite: 'p-dish',
+          item3_text: 'Melts hard water stains',
+          item3_sprite: 'p-tap'
+        %}
+
+        {% render 'purelane-combo-card',
+          title: 'Laundry care bundle',
+          count_label: '3 products',
+          description: 'Includes: Laundry Detergent, Fabric Conditioner & Machine Cleaner Powder. Softer, fresher wash, all in one box.',
+          price: '₹499',
+          compare_at_price: '₹947',
+          save_label: 'Save ₹448',
+          save_badge: 'You save ₹448',
+          is_hero: false,
+          cta_text: 'Shop bundle',
+          cta_url: '#bundles',
+          item1_text: 'Removes tough stains & odour',
+          item1_sprite: 'p-laundry',
+          item2_text: 'Softens & freshens every wash',
+          item2_is_tile: true,
+          item3_text: 'Deep-cleans your machine',
+          item3_sprite: 'p-wm'
+        %}
+
+        {% render 'purelane-combo-card',
+          title: 'Complete home bundle',
+          count_label: '5 products',
+          description: 'Includes: Kitchen Cleaner, Laundry Detergent, Floor Cleaner, Toilet Cleaner & Handwash. Our biggest saving box.',
+          price: '₹799',
+          compare_at_price: '₹1,495',
+          save_label: 'Save ₹696',
+          save_badge: 'Biggest saving',
+          flag_badge: 'Best value',
+          is_hero: true,
+          cta_text: 'Shop bundle',
+          cta_url: '#bundles',
+          item1_text: 'Cuts grease instantly',
+          item1_sprite: 'p-kitchen',
+          item2_text: 'Kills 99.9% germs',
+          item2_sprite: 'p-floor',
+          item3_text: 'Gentle hydration for hands',
+          item3_sprite: 'p-handwash'
+        %}
+
+        {% render 'purelane-combo-card',
+          title: 'Bathroom deep clean',
+          count_label: '3 products',
+          description: 'Includes: Toilet Cleaner, Tap Cleaner & Magic Eraser. A complete bathroom refresh in one box.',
+          price: '₹499',
+          compare_at_price: '₹897',
+          save_label: 'Save ₹398',
+          save_badge: 'You save ₹398',
+          is_hero: false,
+          cta_text: 'Shop bundle',
+          cta_url: '#bundles',
+          item1_text: 'Kills 99.9% germs',
+          item1_sprite: 'p-toilet',
+          item2_text: 'Melts hard water stains',
+          item2_sprite: 'p-tap',
+          item3_text: 'Scrubs away soap scum',
+          item3_sprite: 'p-eraser'
+        %}
+
+        {% render 'purelane-combo-card',
+          title: 'Hard water solution kit',
+          count_label: '2 products',
+          description: 'Includes: Tap Cleaner & Toilet Cleaner. A quick, focused fix for hard water stains across the home.',
+          price: '₹349',
+          compare_at_price: '₹598',
+          save_label: 'Save ₹249',
+          save_badge: 'You save ₹249',
+          is_hero: false,
+          cta_text: 'Shop bundle',
+          cta_url: '#bundles',
+          item1_text: 'Melts hard water stains',
+          item1_sprite: 'p-tap',
+          item2_text: 'Fights limescale in the bowl',
+          item2_sprite: 'p-toilet'
+        %}
+      {%- endif -%}
+    </div>
+
+    {%- if swipecue_text != blank -%}
+      <div class="swipecue" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h13m-5-6 6 6-6 6"/>
+        </svg>
+        {{ swipecue_text }}
+      </div>
+    {%- endif -%}
+
+    {%- if railnote != blank -%}
+      <p class="railnote">{{ railnote }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- comment -%} Standalone sprite definitions ensuring Section 03 works with or without Section 01 {%- endcomment -%}
+<style>
+  #PurelaneCombos-{{ section_id }} {
+    --p-kitchen:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNTk1IiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjU5NSI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM2YjU1YjgiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNmI1NWI4IiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjU5LjUiIHJ4PSIxNy42IiBmaWxsPSIjNmI1NWI4IiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjUzLjYiIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQxLjciIGZpbGw9IiM2YjU1YjgiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjExOS4wIiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDc2LjAiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNjEuOCIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2MS44IiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMDkuNCIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIxLjQiIHJ4PSIyIiBmaWxsPSIjNmI1NWI4IiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM1Mi4yIiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNi43IiByeD0iMiIgZmlsbD0iIzZiNTViOCIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-dish:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNjA5IiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjYwOSI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM0YjNhOGYiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNGIzYThmIiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjYwLjkiIHJ4PSIxNy42IiBmaWxsPSIjNGIzYThmIiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjU0LjgiIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQyLjYiIGZpbGw9IiM0YjNhOGYiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjEyMS44IiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDg3LjIiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNjguMCIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2NS42IiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMTYuNyIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIxLjkiIHJ4PSIyIiBmaWxsPSIjNGIzYThmIiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM2MC41IiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNy4xIiByeD0iMiIgZmlsbD0iIzRiM2E4ZiIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-tap:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNTk1IiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjU5NSI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM2MjUwYWQiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNjI1MGFkIiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjU5LjUiIHJ4PSIxNy42IiBmaWxsPSIjNjI1MGFkIiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjUzLjYiIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQxLjciIGZpbGw9IiM2MjUwYWQiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjExOS4wIiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDc2LjAiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNjEuOCIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2MS44IiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMDkuNCIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIxLjQiIHJ4PSIyIiBmaWxsPSIjNjI1MGFkIiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM1Mi4yIiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNi43IiByeD0iMiIgZmlsbD0iIzYyNTBhZCIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-laundry:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNjAzIiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjYwMyI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM1YTQ2YTMiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNWE0NmEzIiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjYwLjMiIHJ4PSIxNy42IiBmaWxsPSIjNWE0NmEzIiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjU0LjMiIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQyLjIiIGZpbGw9IiM1YTQ2YTMiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjEyMC42IiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDgyLjQiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNjUuMyIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2NC4wIiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMTMuNiIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIxLjciIHJ4PSIyIiBmaWxsPSIjNWE0NmEzIiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM1Ny4wIiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNi45IiByeD0iMiIgZmlsbD0iIzVhNDZhMyIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-wm:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMDAgNDg4IiB3aWR0aD0iMzAwIiBoZWlnaHQ9IjQ4OCI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM0YjNhOGYiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNGIzYThmIiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTE4LjQiIHk9IjAiIHdpZHRoPSI2My4yIiBoZWlnaHQ9IjQ4LjgiIHJ4PSIxMy45IiBmaWxsPSIjNGIzYThmIiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTI3LjIiIHk9IjQzLjkiIHdpZHRoPSI0NS41IiBoZWlnaHQ9IjM0LjIiIGZpbGw9IiM0YjNhOGYiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjU3LjAiIHk9Ijk3LjYiIHdpZHRoPSIxODYuMCIgaGVpZ2h0PSIzOTAuNCIgcng9IjI5LjgiIGZpbGw9InVybCgjZykiLz4KPHJlY3QgeD0iNzkuMyIgeT0iMjE0LjciIHdpZHRoPSIxNDEuNCIgaGVpZ2h0PSIxMzIuNyIgcng9IjkuMyIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEwMS42IiB5PSIyNTMuOCIgd2lkdGg9Ijk2LjciIGhlaWdodD0iMTcuNiIgcng9IjIiIGZpbGw9IiM0YjNhOGYiIG9wYWNpdHk9Ii41NSIvPgo8cmVjdCB4PSIxMTIuOCIgeT0iMjg4LjkiIHdpZHRoPSI3NC40IiBoZWlnaHQ9IjEzLjciIHJ4PSIyIiBmaWxsPSIjNGIzYThmIiBvcGFjaXR5PSIuMzUiLz4KPC9zdmc+");
+    --p-floor:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNjAyIiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjYwMiI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM4MTY4YzkiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjODE2OGM5IiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjYwLjIiIHJ4PSIxNy42IiBmaWxsPSIjODE2OGM5IiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjU0LjIiIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQyLjEiIGZpbGw9IiM4MTY4YzkiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjEyMC40IiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDgxLjYiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNjQuOSIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2My43IiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMTMuMCIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIxLjciIHJ4PSIyIiBmaWxsPSIjODE2OGM5IiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM1Ni40IiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNi45IiByeD0iMiIgZmlsbD0iIzgxNjhjOSIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-handwash:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMzIyIiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjMyMiI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM4Zjc0ZDQiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjOGY3NGQ0IiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iOTQuNyIgeT0iMCIgd2lkdGg9IjUwLjYiIGhlaWdodD0iMzIuMiIgcng9IjExLjEiIGZpbGw9IiM4Zjc0ZDQiIG9wYWNpdHk9Ii44NSIvPgo8cmVjdCB4PSIxMDEuOCIgeT0iMjkuMCIgd2lkdGg9IjM2LjQiIGhlaWdodD0iMjIuNSIgZmlsbD0iIzhmNzRkNCIgb3BhY2l0eT0iLjciLz4KPHJlY3QgeD0iNDUuNiIgeT0iNjQuNCIgd2lkdGg9IjE0OC44IiBoZWlnaHQ9IjI1Ny42IiByeD0iMjMuOCIgZmlsbD0idXJsKCNnKSIvPgo8cmVjdCB4PSI2My41IiB5PSIxNDEuNyIgd2lkdGg9IjExMy4xIiBoZWlnaHQ9Ijg3LjYiIHJ4PSI3LjQiIGZpbGw9IiNmYWY3ZmQiIG9wYWNpdHk9Ii44OCIvPgo8cmVjdCB4PSI4MS4zIiB5PSIxNjcuNCIgd2lkdGg9Ijc3LjQiIGhlaWdodD0iMTEuNiIgcng9IjIiIGZpbGw9IiM4Zjc0ZDQiIG9wYWNpdHk9Ii41NSIvPgo8cmVjdCB4PSI5MC4yIiB5PSIxOTAuNiIgd2lkdGg9IjU5LjUiIGhlaWdodD0iOS4wIiByeD0iMiIgZmlsbD0iIzhmNzRkNCIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-toilet:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNjE5IiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjYxOSI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM3YTYyYzIiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjN2E2MmMyIiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjYxLjkiIHJ4PSIxNy42IiBmaWxsPSIjN2E2MmMyIiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjU1LjciIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQzLjMiIGZpbGw9IiM3YTYyYzIiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjEyMy44IiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDk1LjIiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNzIuNCIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2OC40IiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMjEuOSIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIyLjMiIHJ4PSIyIiBmaWxsPSIjN2E2MmMyIiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM2Ni40IiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNy4zIiByeD0iMiIgZmlsbD0iIzdhNjJjMiIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-eraser:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMTgyIiB3aWR0aD0iMjQwIiBoZWlnaHQ9IjE4MiI+CjxyZWN0IHg9IjE5LjIiIHk9IjE5LjIiIHdpZHRoPSIyMDEuNiIgaGVpZ2h0PSIxNDMuNiIgcng9IjIxLjgiIGZpbGw9IiNmMGEwM2MiIG9wYWNpdHk9Ii44NSIvPgo8cmVjdCB4PSI1Mi44IiB5PSI2OS4yIiB3aWR0aD0iMTM0LjQiIGhlaWdodD0iMTguMiIgcng9IjMiIGZpbGw9IiNmYWY3ZmQiIG9wYWNpdHk9Ii45Ii8+CjxyZWN0IHg9IjcyLjAiIHk9IjEwMS45IiB3aWR0aD0iOTYuMCIgaGVpZ2h0PSIxMi43IiByeD0iMyIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjYiLz4KPC9zdmc+");
+  }
+  #PurelaneCombos-{{ section_id }} .pimg {
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    flex: 0 0 auto;
+  }
+  #PurelaneCombos-{{ section_id }} .p-kitchen { background-image: var(--p-kitchen); aspect-ratio: 0.6387; }
+  #PurelaneCombos-{{ section_id }} .p-dish { background-image: var(--p-dish); aspect-ratio: 0.624; }
+  #PurelaneCombos-{{ section_id }} .p-tap { background-image: var(--p-tap); aspect-ratio: 0.6387; }
+  #PurelaneCombos-{{ section_id }} .p-laundry { background-image: var(--p-laundry); aspect-ratio: 0.6302; }
+  #PurelaneCombos-{{ section_id }} .p-wm { background-image: var(--p-wm); aspect-ratio: 0.6148; }
+  #PurelaneCombos-{{ section_id }} .p-floor { background-image: var(--p-floor); aspect-ratio: 0.6312; }
+  #PurelaneCombos-{{ section_id }} .p-handwash { background-image: var(--p-handwash); aspect-ratio: 0.7453; }
+  #PurelaneCombos-{{ section_id }} .p-toilet { background-image: var(--p-toilet); aspect-ratio: 0.6139; }
+  #PurelaneCombos-{{ section_id }} .p-eraser { background-image: var(--p-eraser); aspect-ratio: 1.3187; }
+</style>
+
+<script>
+(function() {
+  var sectionId = {{ section_id | json }};
+  var container = document.getElementById('PurelaneCombos-' + sectionId);
+  if (!container) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Reveal on scroll */
+  var revEls = container.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window && !reduce) {
+    var ro = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          ro.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+    revEls.forEach(function(el) { ro.observe(el); });
+  } else {
+    revEls.forEach(function(el) { el.classList.add('in'); });
+  }
+
+  /* Theme Editor Support */
+  if (window.Shopify && window.Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.detail.sectionId === sectionId) {
+        var els = container.querySelectorAll('.rv');
+        els.forEach(function(el) { el.classList.add('in'); });
+      }
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Best-Selling Combos",
+  "tag": "section",
+  "class": "purelane-combos-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Pre-built to save you money"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Best selling combos"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rule",
+      "label": "Show decorative divider",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Description",
+      "default": "Swipe through the boxes people order most. Each one is already priced below buying the same products on their own."
+    },
+    {
+      "type": "header",
+      "content": "Footer Cues"
+    },
+    {
+      "type": "text",
+      "id": "swipecue_text",
+      "label": "Swipe cue label",
+      "default": "Swipe for more combos"
+    },
+    {
+      "type": "textarea",
+      "id": "railnote",
+      "label": "Footer note",
+      "default": "Tapping \"Shop bundle\" opens the bundle picker with these products already added. You can still swap anything before you pay."
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animations",
+      "label": "Enable entrance animations",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "combo",
+      "name": "Combo Box",
+      "settings": [
+        {
+          "type": "product",
+          "id": "combo_product",
+          "label": "Link to Shopify Product (optional)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Combo Title",
+          "default": "Kitchen essentials"
+        },
+        {
+          "type": "text",
+          "id": "count_label",
+          "label": "Product count label",
+          "default": "3 products"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Includes description",
+          "default": "Includes: Foaming Kitchen Cleaner, Dishwash Gel & Tap Cleaner. Everything for a sparkling kitchen, no need to pick separately."
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "₹499"
+        },
+        {
+          "type": "text",
+          "id": "compare_at_price",
+          "label": "Compare at price",
+          "default": "₹897"
+        },
+        {
+          "type": "text",
+          "id": "save_label",
+          "label": "Savings tag label",
+          "default": "Save ₹398"
+        },
+        {
+          "type": "text",
+          "id": "save_badge",
+          "label": "Top badge (e.g. You save ₹398 / Biggest saving)",
+          "default": "You save ₹398"
+        },
+        {
+          "type": "text",
+          "id": "flag_badge",
+          "label": "Top right flag (e.g. Most popular / Best value)",
+          "default": "Most popular"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_hero",
+          "label": "Highlight as featured combo (golden glow + primary button)",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button text",
+          "default": "Shop bundle"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Button Link URL"
+        },
+        {
+          "type": "text",
+          "id": "fine_print",
+          "label": "Fine print text",
+          "default": "Inclusive of all taxes · COD available"
+        },
+        {
+          "type": "header",
+          "content": "Included Item 1"
+        },
+        {
+          "type": "text",
+          "id": "item1_text",
+          "label": "Caption",
+          "default": "Cuts grease instantly"
+        },
+        {
+          "type": "text",
+          "id": "item1_sprite",
+          "label": "Item 1 sprite class",
+          "default": "p-kitchen"
+        },
+        {
+          "type": "image_picker",
+          "id": "item1_image",
+          "label": "Or upload custom image"
+        },
+        {
+          "type": "header",
+          "content": "Included Item 2"
+        },
+        {
+          "type": "text",
+          "id": "item2_text",
+          "label": "Caption",
+          "default": "Squeaky clean dishes"
+        },
+        {
+          "type": "text",
+          "id": "item2_sprite",
+          "label": "Item 2 sprite class",
+          "default": "p-dish"
+        },
+        {
+          "type": "image_picker",
+          "id": "item2_image",
+          "label": "Or upload custom image"
+        },
+        {
+          "type": "checkbox",
+          "id": "item2_is_tile",
+          "label": "Render as dashed icon tile instead of bottle",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Included Item 3"
+        },
+        {
+          "type": "text",
+          "id": "item3_text",
+          "label": "Caption",
+          "default": "Melts hard water stains"
+        },
+        {
+          "type": "text",
+          "id": "item3_sprite",
+          "label": "Item 3 sprite class",
+          "default": "p-tap"
+        },
+        {
+          "type": "image_picker",
+          "id": "item3_image",
+          "label": "Or upload custom image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Best-Selling Combos",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

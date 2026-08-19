@@ -1,0 +1,109 @@
+{{ 'purelane-footer.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Purelane Footer Section
+  Renders the 4-column glass footer and mobile sticky CTA bar.
+{%- endcomment -%}
+
+<footer class="purelane-footer" data-section-id="{{ section.id }}" data-section-type="purelane-footer">
+  <div class="purelane-footer__wrap">
+    <div class="purelane-fgrid">
+      <div class="purelane-fcol">
+        <a class="purelane-brand" href="{{ routes.root_url }}">
+          <span class="purelane-brand__mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color:#b8701c">
+              <path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/>
+              <path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/>
+              <path d="M12 21v-6"/>
+            </svg>
+          </span>
+          <span class="purelane-brand__txt">
+            <span class="purelane-brand__n1">{{ shop.name | default: 'Purelane' }}</span>
+            <span class="purelane-brand__n2">Clean, simply</span>
+          </span>
+        </a>
+        <p style="max-width:30ch">Effective cleaning, powered by nature. Made for Indian homes since day one.</p>
+      </div>
+
+      <div class="purelane-fcol">
+        <h5>Shop</h5>
+        <a href="#shop">Bestsellers</a>
+        <a href="#shop">Kitchen</a>
+        <a href="#shop">Laundry</a>
+        <a href="#shop">Home</a>
+        <a href="#bundles">Starter kits</a>
+      </div>
+
+      <div class="purelane-fcol">
+        <h5>About</h5>
+        <a href="#top">How it works</a>
+        <a href="#combos">Combos</a>
+        <a href="#bundles">Bundles</a>
+        <a href="#reviews">Reviews</a>
+      </div>
+
+      <div class="purelane-fcol">
+        <h5>Get in touch</h5>
+        <a href="mailto:hello@purelane.com">hello@purelane.com</a>
+        <a href="tel:+919930123234">+91 9930 123 234</a>
+        <p style="font-size:12px;color:rgba(36,26,61,0.56)">Purelane Eco Products Pvt Ltd</p>
+      </div>
+    </div>
+
+    <div class="purelane-fbot">
+      <span>&copy; {{ 'now' | date: '%Y' }} Purelane Eco Products Private Limited</span>
+      <span>Privacy &middot; Terms &middot; Refunds &middot; Contact</span>
+    </div>
+  </div>
+</footer>
+
+{%- if section.settings.enable_sticky_cta -%}
+  <div class="purelane-sticky" aria-label="Quick order sticky bar">
+    <span class="lbl">
+      <b>{{ section.settings.sticky_heading | default: 'Pick any 3, pay ₹499' }}</b>
+      <span>{{ section.settings.sticky_subtext | default: 'Free shipping, always' }}</span>
+    </span>
+    <a class="btn" href="{{ section.settings.sticky_url | default: '#bundles' }}">
+      {{ section.settings.sticky_button_text | default: 'Build bundle' }}
+    </a>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Purelane Footer",
+  "tag": "section",
+  "class": "purelane-footer-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_cta",
+      "label": "Enable mobile sticky bottom bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sticky_heading",
+      "label": "Sticky bar heading",
+      "default": "Pick any 3, pay ₹499"
+    },
+    {
+      "type": "text",
+      "id": "sticky_subtext",
+      "label": "Sticky bar subtext",
+      "default": "Free shipping, always"
+    },
+    {
+      "type": "text",
+      "id": "sticky_button_text",
+      "label": "Sticky bar button text",
+      "default": "Build bundle"
+    },
+    {
+      "type": "url",
+      "id": "sticky_url",
+      "label": "Sticky bar link URL"
+    }
+  ]
+}
+{% endschema %}

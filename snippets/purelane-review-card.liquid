@@ -1,0 +1,40 @@
+{%- comment -%}
+  Renders a Purelane Review Card.
+
+  Accepts:
+  - stars: {String} e.g. "★★★★★"
+  - title: {String} Review heading
+  - text: {String} Review quote
+  - author: {String} Author name e.g. "Anita"
+  - product_tag: {String} e.g. "Laundry detergent"
+  - is_verified: {Boolean} If true, shows verified checkmark icon (default: true)
+
+  Usage:
+  {% render 'purelane-review-card', ... %}
+{%- endcomment -%}
+
+{%- liquid
+  assign card_stars = stars | default: '★★★★★'
+  assign card_title = title | default: 'Works like a charm'
+  assign card_text = text | default: 'Finally an eco option that cleans as well as the chemical detergent I used for years, and it smells better.'
+  assign card_author = author | default: 'Anita'
+  assign card_product = product_tag | default: 'Laundry detergent'
+  assign verified = is_verified | default: true
+-%}
+
+<article class="glass-2 rcard">
+  <div class="st" aria-label="5 out of 5 stars">{{ card_stars }}</div>
+  <h5>{{ card_title }}</h5>
+  <p>{{ card_text }}</p>
+  <div class="who">
+    {%- if verified -%}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m5 13 4 4L19 7"/>
+      </svg>
+    {%- endif -%}
+    <b>{{ card_author }}</b>
+    {%- if card_product != blank -%}
+      <span>&middot; {{ card_product }}</span>
+    {%- endif -%}
+  </div>
+</article>

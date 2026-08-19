@@ -1,0 +1,265 @@
+{{ 'purelane-shop.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Purelane Shop / Product Grid Section (Section 02)
+  Renders a collection of products using the Purelane product card component.
+{%- endcomment -%}
+
+{%- liquid
+  assign section_id = section.id
+  assign kicker = section.settings.kicker
+  assign title = section.settings.title
+  assign show_rule = section.settings.show_rule
+  assign collection = section.settings.collection
+  assign products_to_show = section.settings.products_to_show | default: 8
+  assign show_rating = section.settings.show_rating
+  assign enable_animations = section.settings.enable_animations
+-%}
+
+<div
+  id="PurelaneShop-{{ section_id }}"
+  class="purelane-shop"
+  data-section-id="{{ section_id }}"
+  data-section-type="purelane-shop"
+>
+  <div class="purelane-shop__wrap">
+    {%- if kicker != blank or title != blank -%}
+      <div class="purelane-shop__head rv{% if enable_animations == false %} in{% endif %}">
+        {%- if kicker != blank -%}
+          <span class="purelane-shop__kicker">{{ kicker }}</span>
+        {%- endif -%}
+        {%- if title != blank -%}
+          <h2 class="purelane-shop__title">{{ title }}</h2>
+        {%- endif -%}
+        {%- if show_rule -%}
+          <div class="purelane-shop__rule" aria-hidden="true">
+            <i></i>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/>
+              <path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/>
+            </svg>
+            <i></i>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="purelane-shop__shelf">
+      {%- if collection != blank and collection.products_count > 0 -%}
+        {%- for product in collection.products limit: products_to_show -%}
+          {%- assign mod = forloop.index0 | modulo: 4 -%}
+          {%- case mod -%}
+            {%- when 0 -%}
+              {%- assign delay_class = '' -%}
+            {%- when 1 -%}
+              {%- assign delay_class = 'rv-d1' -%}
+            {%- when 2 -%}
+              {%- assign delay_class = 'rv-d2' -%}
+            {%- when 3 -%}
+              {%- assign delay_class = 'rv-d3' -%}
+          {%- endcase -%}
+
+          {% render 'purelane-product-card',
+            card_product: product,
+            show_rating: show_rating,
+            delay_class: delay_class
+          %}
+        {%- endfor -%}
+      {%- elsif collections.all != blank and collections.all.products_count > 0 -%}
+        {%- for product in collections.all.products limit: products_to_show -%}
+          {%- assign mod = forloop.index0 | modulo: 4 -%}
+          {%- case mod -%}
+            {%- when 0 -%}
+              {%- assign delay_class = '' -%}
+            {%- when 1 -%}
+              {%- assign delay_class = 'rv-d1' -%}
+            {%- when 2 -%}
+              {%- assign delay_class = 'rv-d2' -%}
+            {%- when 3 -%}
+              {%- assign delay_class = 'rv-d3' -%}
+          {%- endcase -%}
+
+          {% render 'purelane-product-card',
+            card_product: product,
+            show_rating: show_rating,
+            delay_class: delay_class
+          %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..products_to_show) -%}
+          {%- assign mod = forloop.index0 | modulo: 4 -%}
+          {%- case mod -%}
+            {%- when 0 -%}
+              {%- assign delay_class = '' -%}
+            {%- when 1 -%}
+              {%- assign delay_class = 'rv-d1' -%}
+            {%- when 2 -%}
+              {%- assign delay_class = 'rv-d2' -%}
+            {%- when 3 -%}
+              {%- assign delay_class = 'rv-d3' -%}
+          {%- endcase -%}
+
+          <article class="pl-card rv{% if delay_class != blank %} {{ delay_class }}{% endif %}">
+            <div class="pl-card__shot">
+              <span class="pl-card__pill">Best seller</span>
+              <svg viewBox="0 0 130 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+                <defs>
+                  <linearGradient id="plFB-p{{ i }}" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#ffffff" stop-opacity=".10"/>
+                    <stop offset=".18" stop-color="#ffffff" stop-opacity=".38"/>
+                    <stop offset=".5" stop-color="#dff3e4" stop-opacity=".10"/>
+                    <stop offset=".82" stop-color="#ffffff" stop-opacity=".22"/>
+                    <stop offset="1" stop-color="#9fc7b4" stop-opacity=".32"/>
+                  </linearGradient>
+                  <linearGradient id="plFL-p{{ i }}" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#04756e"/>
+                    <stop offset=".55" stop-color="#4b3a8f"/>
+                    <stop offset="1" stop-color="#013f3d"/>
+                  </linearGradient>
+                  <linearGradient id="plFC-p{{ i }}" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#8fa89b"/>
+                    <stop offset=".22" stop-color="#eef6ef"/>
+                    <stop offset="1" stop-color="#7d938c"/>
+                  </linearGradient>
+                </defs>
+                <ellipse cx="65" cy="190" rx="40" ry="7" fill="#01201c" opacity=".5"/>
+                <path d="M40 60V48c0-7 5-12 12-12h13c8 0 13 6 13 13v11Z" fill="url(#plFC-p{{ i }})"/>
+                <path d="M65 37c11-1 19 3 25 10 3 4 2 9-2 10l-20 3Z" fill="#cfdcd2"/>
+                <path d="M14 44h27v9H19c-4 0-6-2-6-4s1-5 1-5Z" fill="#cfdcd2"/>
+                <path d="M44 52c-7 3-11 9-10 16 1 6 5 10 12 10v-6c-4 0-6-2-6-5s2-6 5-7Z" fill="#cfdcd2"/>
+                <rect x="38" y="56" width="42" height="7" rx="3" fill="#a8bdb2"/>
+                <rect x="41" y="62" width="36" height="16" rx="4" fill="url(#plFC-p{{ i }})"/>
+                <path d="M28 96c0-11 6-18 15-24v-8h33v8c9 6 15 13 15 24v62c0 12-8 20-21 20H49c-13 0-21-8-21-20Z" fill="url(#plFB-p{{ i }})" stroke="rgba(255,255,255,.4)" stroke-width="1.4"/>
+                <rect x="31" y="112" width="66" height="60" rx="6" fill="url(#plFL-p{{ i }})"/>
+                <rect x="31" y="112" width="66" height="60" rx="6" fill="none" stroke="rgba(236,230,247,.26)" stroke-width="1"/>
+                <g transform="translate(58 120) scale(.5)" fill="none" stroke="#f0a03c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/>
+                  <path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/>
+                </g>
+                <text x="64" y="140" text-anchor="middle" font-family="Outfit, sans-serif" font-size="8.6" font-weight="800" letter-spacing=".7" fill="#faf7fd">PURELANE</text>
+                <line x1="42" y1="146" x2="86" y2="146" stroke="#f0a03c" stroke-width=".9" opacity=".85"/>
+                <text x="64" y="156" text-anchor="middle" font-family="Inter, sans-serif" font-size="6.4" font-weight="700" letter-spacing="1.1" fill="#ece6f7">CLEANER</text>
+                <text x="64" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="6.4" font-weight="700" letter-spacing="1.1" fill="#ece6f7">FORMULA</text>
+                <text x="64" y="171" text-anchor="middle" font-family="Inter, sans-serif" font-size="4.8" font-weight="600" letter-spacing=".9" fill="rgba(236,230,247,.7)">500 ML</text>
+                <rect x="36" y="98" width="6" height="72" rx="3" fill="#ffffff" opacity=".3"/>
+                <rect x="86" y="102" width="4" height="64" rx="2" fill="#ffffff" opacity=".18"/>
+              </svg>
+            </div>
+            <h4 class="pl-card__title">Sample Plant-Based Cleaner {{ i }}</h4>
+            <div class="pl-card__rate"><b>★ 4.8</b> · 237 reviews</div>
+            <div class="pl-card__pr"><strong>₹200</strong><s>₹299</s><em>33% off</em></div>
+            <button class="pl-btn pl-btn--ghost pl-btn--sm" type="button">Add to cart</button>
+          </article>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var sectionId = {{ section_id | json }};
+  var container = document.getElementById('PurelaneShop-' + sectionId);
+  if (!container) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Reveal on scroll */
+  var revEls = container.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window && !reduce) {
+    var ro = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          ro.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+    revEls.forEach(function(el) { ro.observe(el); });
+  } else {
+    revEls.forEach(function(el) { el.classList.add('in'); });
+  }
+
+  /* Theme Editor Support */
+  if (window.Shopify && window.Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.detail.sectionId === sectionId) {
+        var els = container.querySelectorAll('.rv');
+        els.forEach(function(el) { el.classList.add('in'); });
+      }
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Purelane Shop Grid",
+  "tag": "section",
+  "class": "purelane-shop-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Bestsellers"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Loved by 30,000 homes"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rule",
+      "label": "Show decorative divider",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 24,
+      "step": 2,
+      "default": 8,
+      "label": "Maximum products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show product rating",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animations",
+      "label": "Enable scroll entrance animations",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Purelane Shop Grid",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

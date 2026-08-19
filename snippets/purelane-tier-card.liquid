@@ -1,0 +1,119 @@
+{%- comment -%}
+  Renders a Purelane Bundle Tier Card.
+
+  Accepts:
+  - tier_product: {Object} Optional Shopify product object
+  - tag: {String} e.g. "Starter", "Most popular", "Whole home"
+  - quantity: {String} e.g. "2", "3", "5"
+  - quantity_label: {String} e.g. "Products"
+  - price: {String} e.g. "₹349"
+  - compare_at_price: {String} e.g. "₹598"
+  - unit_price_note: {String} e.g. "Flat ₹174 per product"
+  - is_best: {Boolean} Featured highlight card (golden border + primary button)
+  - cta_text: {String} Button text (default: "Build this box")
+  - cta_url: {String} Button link URL
+  - feature1: {String} First bullet feature
+  - feature2: {String} Second bullet feature
+  - feature3: {String} Third bullet feature
+  - sprites_str: {String} Comma-separated sprite classes e.g. "p-tap,p-kitchen"
+  - custom_image: {Object} Optional custom image
+  - delay_class: {String} Stagger delay e.g. 'rv-d2'
+
+  Usage:
+  {% render 'purelane-tier-card', ... %}
+{%- endcomment -%}
+
+{%- liquid
+  assign card_url = cta_url | default: tier_product.url | default: '#shop'
+  assign card_cta = cta_text | default: 'Build this box'
+
+  if tier_product != blank
+    if price == blank
+      assign card_price = tier_product.price | money_without_trailing_zeros
+    else
+      assign card_price = price
+    endif
+    if compare_at_price == blank and tier_product.compare_at_price > tier_product.price
+      assign card_compare = tier_product.compare_at_price | money_without_trailing_zeros
+    else
+      assign card_compare = compare_at_price
+    endif
+  else
+    assign card_price = price
+    assign card_compare = compare_at_price
+  endif
+
+  assign sprites_array = sprites_str | split: ','
+-%}
+
+<article class="glass tier{% if is_best %} best{% endif %} rv{% if delay_class != blank %} {{ delay_class }}{% endif %}">
+  {%- if tag != blank -%}
+    <span class="tag">{{ tag }}</span>
+  {%- endif -%}
+
+  <div class="tierpix{% if sprites_array.size >= 5 %} five{% endif %}" aria-hidden="true">
+    {%- if custom_image != blank -%}
+      {{ custom_image | image_url: width: 300 | image_tag: class: 'pimg', loading: 'lazy', alt: tag }}
+    {%- elsif sprites_array.size > 0 -%}
+      {%- for sprite in sprites_array -%}
+        {%- assign s_clean = sprite | strip -%}
+        <span class="pimg {{ s_clean }}" role="img"></span>
+      {%- endfor -%}
+    {%- else -%}
+      <span class="pimg p-tap" role="img"></span>
+      <span class="pimg p-kitchen" role="img"></span>
+    {%- endif -%}
+  </div>
+
+  <div class="qty">
+    {{ quantity | default: '2' }}
+    <small>{{ quantity_label | default: 'Products' }}</small>
+  </div>
+
+  <div class="price">
+    {{ card_price }}
+    {%- if card_compare != blank -%}
+      <s>{{ card_compare }}</s>
+    {%- endif -%}
+  </div>
+
+  {%- if unit_price_note != blank -%}
+    <p class="body-s">{{ unit_price_note }}</p>
+  {%- endif -%}
+
+  <ul>
+    {%- if feature1 != blank -%}
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m5 13 4 4L19 7"/>
+        </svg>
+        <span>{{ feature1 }}</span>
+      </li>
+    {%- endif -%}
+    {%- if feature2 != blank -%}
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m5 13 4 4L19 7"/>
+        </svg>
+        <span>{{ feature2 }}</span>
+      </li>
+    {%- endif -%}
+    {%- if feature3 != blank -%}
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m5 13 4 4L19 7"/>
+        </svg>
+        <span>{{ feature3 }}</span>
+      </li>
+    {%- endif -%}
+  </ul>
+
+  <a class="btn {% if is_best %}btn-primary{% else %}btn-ghost{% endif %}" href="{{ card_url }}">
+    {{ card_cta }}
+    {%- if is_best -%}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h13m-5-6 6 6-6 6"/>
+      </svg>
+    {%- endif -%}
+  </a>
+</article>

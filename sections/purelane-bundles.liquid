@@ -1,0 +1,333 @@
+{{ 'purelane-bundles.css' | asset_url | stylesheet_tag }}
+
+{%- comment -%}
+  Purelane Bundles Section (Section 04)
+  Renders the 3-tier box pricing grid ("One box. Every room.")
+{%- endcomment -%}
+
+{%- liquid
+  assign section_id = section.id
+  assign kicker = section.settings.kicker
+  assign title = section.settings.title
+  assign lede = section.settings.lede
+  assign enable_animations = section.settings.enable_animations
+-%}
+
+<div
+  id="PurelaneBundles-{{ section_id }}"
+  class="purelane-bundles"
+  data-section-id="{{ section_id }}"
+  data-section-type="purelane-bundles"
+>
+  <div class="purelane-bundles__wrap">
+    {%- if kicker != blank or title != blank or lede != blank -%}
+      <div class="purelane-bundles__header-panel rv{% if enable_animations == false %} in{% endif %}">
+        {%- if kicker != blank -%}
+          <span class="purelane-bundles__kicker">{{ kicker }}</span>
+        {%- endif -%}
+        {%- if title != blank -%}
+          <h2 class="purelane-bundles__title">{{ title }}</h2>
+        {%- endif -%}
+        {%- if lede != blank -%}
+          <p class="purelane-bundles__lede">{{ lede }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="tiers">
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- assign mod = forloop.index0 | modulo: 3 -%}
+          {%- case mod -%}
+            {%- when 0 -%}
+              {%- assign delay_class = '' -%}
+            {%- when 1 -%}
+              {%- assign delay_class = 'rv-d2' -%}
+            {%- when 2 -%}
+              {%- assign delay_class = 'rv-d3' -%}
+          {%- endcase -%}
+
+          {% render 'purelane-tier-card',
+            tier_product: block.settings.tier_product,
+            tag: block.settings.tag,
+            quantity: block.settings.quantity,
+            quantity_label: block.settings.quantity_label,
+            price: block.settings.price,
+            compare_at_price: block.settings.compare_at_price,
+            unit_price_note: block.settings.unit_price_note,
+            is_best: block.settings.is_best,
+            cta_text: block.settings.cta_text,
+            cta_url: block.settings.cta_url,
+            feature1: block.settings.feature1,
+            feature2: block.settings.feature2,
+            feature3: block.settings.feature3,
+            sprites_str: block.settings.sprites_str,
+            custom_image: block.settings.custom_image,
+            delay_class: delay_class
+          %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Default 3 Bundle Tiers matching reference {%- endcomment -%}
+        {% render 'purelane-tier-card',
+          tag: 'Starter',
+          quantity: '2',
+          quantity_label: 'Products',
+          price: '₹349',
+          compare_at_price: '₹598',
+          unit_price_note: 'Flat ₹174 per product',
+          is_best: false,
+          cta_text: 'Build this box',
+          cta_url: '#shop',
+          feature1: 'Pick any two products',
+          feature2: 'Free shipping across India',
+          sprites_str: 'p-tap,p-kitchen'
+        %}
+
+        {% render 'purelane-tier-card',
+          tag: 'Most popular',
+          quantity: '3',
+          quantity_label: 'Products',
+          price: '₹499',
+          compare_at_price: '₹897',
+          unit_price_note: 'Flat ₹166 per product',
+          is_best: true,
+          cta_text: 'Build this box',
+          cta_url: '#shop',
+          feature1: 'Pick any three products',
+          feature2: 'Covers kitchen and laundry',
+          feature3: 'Free shipping across India',
+          sprites_str: 'p-kitchen,p-tap,p-dish',
+          delay_class: 'rv-d2'
+        %}
+
+        {% render 'purelane-tier-card',
+          tag: 'Whole home',
+          quantity: '5',
+          quantity_label: 'Products',
+          price: '₹799',
+          compare_at_price: '₹1495',
+          unit_price_note: 'Flat ₹160 per product',
+          is_best: false,
+          cta_text: 'Build this box',
+          cta_url: '#shop',
+          feature1: 'Pick any five products',
+          feature2: 'Every room in one order',
+          feature3: 'Free shipping across India',
+          sprites_str: 'p-kitchen,p-tap,p-floor,p-toilet,p-laundry',
+          delay_class: 'rv-d3'
+        %}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{%- comment -%} Sprite definitions for standalone reliability {%- endcomment -%}
+<style>
+  #PurelaneBundles-{{ section_id }} {
+    --p-kitchen:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNTk1IiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjU5NSI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM2YjU1YjgiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNmI1NWI4IiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjU5LjUiIHJ4PSIxNy42IiBmaWxsPSIjNmI1NWI4IiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjUzLjYiIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQxLjciIGZpbGw9IiM2YjU1YjgiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjExOS4wIiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDc2LjAiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNjEuOCIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2MS44IiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMDkuNCIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIxLjQiIHJ4PSIyIiBmaWxsPSIjNmI1NWI4IiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM1Mi4yIiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNi43IiByeD0iMiIgZmlsbD0iIzZiNTViOCIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-dish:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNjA5IiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjYwOSI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM0YjNhOGYiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNGIzYThmIiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjYwLjkiIHJ4PSIxNy42IiBmaWxsPSIjNGIzYThmIiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjU0LjgiIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQyLjYiIGZpbGw9IiM0YjNhOGYiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjEyMS44IiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDg3LjIiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNjguMCIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2NS42IiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMTYuNyIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIxLjkiIHJ4PSIyIiBmaWxsPSIjNGIzYThmIiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM2MC41IiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNy4xIiByeD0iMiIgZmlsbD0iIzRiM2E4ZiIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-tap:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNTk1IiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjU5NSI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM2MjUwYWQiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNjI1MGFkIiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjU5LjUiIHJ4PSIxNy42IiBmaWxsPSIjNjI1MGFkIiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjUzLjYiIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQxLjciIGZpbGw9IiM2MjUwYWQiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjExOS4wIiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDc2LjAiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNjEuOCIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2MS44IiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMDkuNCIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIxLjQiIHJ4PSIyIiBmaWxsPSIjNjI1MGFkIiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM1Mi4yIiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNi43IiByeD0iMiIgZmlsbD0iIzYyNTBhZCIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-laundry:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNjAzIiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjYwMyI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM1YTQ2YTMiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNWE0NmEzIiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjYwLjMiIHJ4PSIxNy42IiBmaWxsPSIjNWE0NmEzIiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjU0LjMiIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQyLjIiIGZpbGw9IiM1YTQ2YTMiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjEyMC42IiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDgyLjQiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNjUuMyIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2NC4wIiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMTMuNiIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIxLjciIHJ4PSIyIiBmaWxsPSIjNWE0NmEzIiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM1Ny4wIiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNi45IiByeD0iMiIgZmlsbD0iIzVhNDZhMyIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-floor:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNjAyIiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjYwMiI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM4MTY4YzkiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjODE2OGM5IiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjYwLjIiIHJ4PSIxNy42IiBmaWxsPSIjODE2OGM5IiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjU0LjIiIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQyLjEiIGZpbGw9IiM4MTY4YzkiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjEyMC40IiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDgxLjYiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNjQuOSIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2My43IiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMTMuMCIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIxLjciIHJ4PSIyIiBmaWxsPSIjODE2OGM5IiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM1Ni40IiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNi45IiByeD0iMiIgZmlsbD0iIzgxNjhjOSIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+    --p-toilet:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzODAgNjE5IiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjYxOSI+CjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgo8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM3YTYyYzIiIHN0b3Atb3BhY2l0eT0iLjk1Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjN2E2MmMyIiBzdG9wLW9wYWNpdHk9Ii42MiIvPgo8L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3QgeD0iMTQ5LjkiIHk9IjAiIHdpZHRoPSI4MC4xIiBoZWlnaHQ9IjYxLjkiIHJ4PSIxNy42IiBmaWxsPSIjN2E2MmMyIiBvcGFjaXR5PSIuODUiLz4KPHJlY3QgeD0iMTYxLjIiIHk9IjU1LjciIHdpZHRoPSI1Ny43IiBoZWlnaHQ9IjQzLjMiIGZpbGw9IiM3YTYyYzIiIG9wYWNpdHk9Ii43Ii8+CjxyZWN0IHg9IjcyLjIiIHk9IjEyMy44IiB3aWR0aD0iMjM1LjYiIGhlaWdodD0iNDk1LjIiIHJ4PSIzNy43IiBmaWxsPSJ1cmwoI2cpIi8+CjxyZWN0IHg9IjEwMC41IiB5PSIyNzIuNCIgd2lkdGg9IjE3OS4xIiBoZWlnaHQ9IjE2OC40IiByeD0iMTEuOCIgZmlsbD0iI2ZhZjdmZCIgb3BhY2l0eT0iLjg4Ii8+CjxyZWN0IHg9IjEyOC43IiB5PSIzMjEuOSIgd2lkdGg9IjEyMi41IiBoZWlnaHQ9IjIyLjMiIHJ4PSIyIiBmaWxsPSIjN2E2MmMyIiBvcGFjaXR5PSIuNTUiLz4KPHJlY3QgeD0iMTQyLjkiIHk9IjM2Ni40IiB3aWR0aD0iOTQuMiIgaGVpZ2h0PSIxNy4zIiByeD0iMiIgZmlsbD0iIzdhNjJjMiIgb3BhY2l0eT0iLjM1Ii8+Cjwvc3ZnPg==");
+  }
+  #PurelaneBundles-{{ section_id }} .pimg {
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: contain;
+    flex: 0 0 auto;
+  }
+  #PurelaneBundles-{{ section_id }} .p-kitchen { background-image: var(--p-kitchen); aspect-ratio: 0.6387; }
+  #PurelaneBundles-{{ section_id }} .p-dish { background-image: var(--p-dish); aspect-ratio: 0.624; }
+  #PurelaneBundles-{{ section_id }} .p-tap { background-image: var(--p-tap); aspect-ratio: 0.6387; }
+  #PurelaneBundles-{{ section_id }} .p-laundry { background-image: var(--p-laundry); aspect-ratio: 0.6302; }
+  #PurelaneBundles-{{ section_id }} .p-floor { background-image: var(--p-floor); aspect-ratio: 0.6312; }
+  #PurelaneBundles-{{ section_id }} .p-toilet { background-image: var(--p-toilet); aspect-ratio: 0.6139; }
+</style>
+
+<script>
+(function() {
+  var sectionId = {{ section_id | json }};
+  var container = document.getElementById('PurelaneBundles-' + sectionId);
+  if (!container) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Reveal on scroll */
+  var revEls = container.querySelectorAll('.rv');
+  if ('IntersectionObserver' in window && !reduce) {
+    var ro = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          ro.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+    revEls.forEach(function(el) { ro.observe(el); });
+  } else {
+    revEls.forEach(function(el) { el.classList.add('in'); });
+  }
+
+  /* Theme Editor Support */
+  if (window.Shopify && window.Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function(e) {
+      if (e.detail.sectionId === sectionId) {
+        var els = container.querySelectorAll('.rv');
+        els.forEach(function(el) { el.classList.add('in'); });
+      }
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Bundle Tiers",
+  "tag": "section",
+  "class": "purelane-bundles-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "Build your bundle"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "One box. Every room."
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Description",
+      "default": "Mix and match across kitchen, laundry, home and skin. One flat price, no code needed, free shipping either way."
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animations",
+      "label": "Enable entrance animations",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "Bundle Tier",
+      "settings": [
+        {
+          "type": "product",
+          "id": "tier_product",
+          "label": "Link to Shopify Product (optional)"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag label",
+          "default": "Starter"
+        },
+        {
+          "type": "text",
+          "id": "quantity",
+          "label": "Product count",
+          "default": "2"
+        },
+        {
+          "type": "text",
+          "id": "quantity_label",
+          "label": "Product count label",
+          "default": "Products"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "₹349"
+        },
+        {
+          "type": "text",
+          "id": "compare_at_price",
+          "label": "Compare at price",
+          "default": "₹598"
+        },
+        {
+          "type": "text",
+          "id": "unit_price_note",
+          "label": "Unit price subtitle",
+          "default": "Flat ₹174 per product"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_best",
+          "label": "Highlight as featured tier",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Button text",
+          "default": "Build this box"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "Button link URL"
+        },
+        {
+          "type": "header",
+          "content": "Bullet Points"
+        },
+        {
+          "type": "text",
+          "id": "feature1",
+          "label": "Feature 1",
+          "default": "Pick any two products"
+        },
+        {
+          "type": "text",
+          "id": "feature2",
+          "label": "Feature 2",
+          "default": "Free shipping across India"
+        },
+        {
+          "type": "text",
+          "id": "feature3",
+          "label": "Feature 3"
+        },
+        {
+          "type": "header",
+          "content": "Preview Images"
+        },
+        {
+          "type": "text",
+          "id": "sprites_str",
+          "label": "Comma-separated sprite classes",
+          "default": "p-tap,p-kitchen"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Or upload custom image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bundle Tiers",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

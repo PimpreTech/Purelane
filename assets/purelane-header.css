@@ -1,0 +1,387 @@
+/* ==========================================================================
+   PURELANE HEADER — Dynamic Curved Navigation & Ticker
+   Reproduces the header, ticker marquee, and side progress rail
+   from the reference prototype in V2 Sunlit Light theme.
+   ========================================================================== */
+
+.purelane-header-container {
+  --pl-ink: #f4f0fb;
+  --pl-deep: #e2daf3;
+  --pl-brand: #4b3a8f;
+  --pl-paper: #241a3d;
+  --pl-paper-2: rgba(36, 26, 61, 0.78);
+  --pl-paper-3: rgba(36, 26, 61, 0.56);
+  --pl-accent: #b8701c;
+  --pl-accent-2: #c9761d;
+  --pl-surface: #17102b;
+  --pl-g-bg: linear-gradient(158deg, rgba(255,255,255,.80), rgba(236,230,247,.56) 58%, rgba(222,212,240,.50));
+  --pl-g-line: rgba(75, 58, 143, 0.16);
+  --pl-g-shadow: 0 22px 54px rgba(58, 44, 112, 0.13);
+  --pl-g-inset: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  --pl-maxw: 1180px;
+  --pl-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  position: relative;
+  z-index: 50;
+}
+
+/* ---------- TOP TICKER MARQUEE ---------- */
+.purelane-ticker {
+  position: relative;
+  z-index: 40;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.74);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(75, 58, 143, 0.12);
+  color: var(--pl-paper-2, rgba(36, 26, 61, 0.78));
+}
+
+.purelane-ticker__track {
+  display: inline-flex;
+  gap: 40px;
+  padding: 9px 20px;
+  animation: purelane-tick 30s linear infinite;
+  will-change: transform;
+}
+
+.purelane-ticker b {
+  color: #4f7d10;
+  font-weight: 700;
+}
+
+@keyframes purelane-tick {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- FLOATING CURVED HEADER ---------- */
+.purelane-header {
+  position: fixed;
+  top: 38px;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 0 14px;
+  transition: top 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  box-sizing: border-box;
+}
+
+.purelane-header.up {
+  top: 10px;
+}
+
+/* Glass curved capsule / pill */
+.purelane-navpill {
+  max-width: var(--pl-maxw, 1180px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--pl-g-bg, linear-gradient(158deg, rgba(255,255,255,.80), rgba(236,230,247,.56) 58%, rgba(222,212,240,.50)));
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--pl-g-line, rgba(75, 58, 143, 0.16));
+  box-shadow: var(--pl-g-shadow, 0 22px 54px rgba(58, 44, 112, 0.13)), var(--pl-g-inset, inset 0 1px 0 rgba(255, 255, 255, 0.92));
+  position: relative;
+  box-sizing: border-box;
+}
+
+.purelane-navpill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.55), transparent 32%, transparent 74%, rgba(201, 118, 29, 0.06));
+}
+
+/* Brand logo */
+.purelane-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex: 0 0 auto;
+  text-decoration: none;
+  color: inherit;
+}
+
+.purelane-brand__mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  background: linear-gradient(150deg, rgba(201, 118, 29, 0.20), rgba(75, 58, 143, 0.14));
+  border: 1px solid rgba(75, 58, 143, 0.18);
+  box-sizing: border-box;
+}
+
+.purelane-brand__mark svg {
+  width: 23px;
+  height: 23px;
+  color: #b8701c;
+}
+
+.purelane-brand__txt {
+  line-height: 1.05;
+}
+
+.purelane-brand__n1 {
+  display: block;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  font-weight: 800;
+  font-size: 16.5px;
+  line-height: 1.06;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--pl-surface, #17102b);
+}
+
+.purelane-brand__n2 {
+  display: block;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 8.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--pl-paper-3, rgba(36, 26, 61, 0.56));
+}
+
+/* Nav links */
+.purelane-nav {
+  display: none;
+  gap: 26px;
+  margin: 0 auto;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.purelane-nav a {
+  color: var(--pl-paper-2, rgba(36, 26, 61, 0.78));
+  padding: 6px 0;
+  position: relative;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.purelane-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 1.5px;
+  background: var(--pl-accent, #b8701c);
+  transition: right 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.purelane-nav a:hover {
+  color: var(--pl-surface, #17102b);
+}
+
+.purelane-nav a:hover::after {
+  right: 0;
+}
+
+@media (min-width: 1024px) {
+  .purelane-nav {
+    display: flex;
+  }
+}
+
+/* Navigation utility tools */
+.purelane-navtools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.purelane-ico {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--pl-paper-2, rgba(36, 26, 61, 0.78));
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s;
+}
+
+.purelane-ico:hover {
+  background: rgba(75, 58, 143, 0.09);
+  color: var(--pl-surface, #17102b);
+}
+
+.purelane-ico svg {
+  width: 18px;
+  height: 18px;
+}
+
+.purelane-dot {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #4b3a8f;
+  color: #f4fdf6;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 9.5px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
+.purelane-burger {
+  display: grid;
+}
+
+@media (min-width: 1024px) {
+  .purelane-burger {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .purelane-ico.hide-s {
+    display: none;
+  }
+  .purelane-brand__mark {
+    width: 34px;
+    height: 34px;
+  }
+  .purelane-brand__n1 {
+    font-size: 14.5px;
+  }
+  .purelane-brand__n2 {
+    font-size: 7.6px;
+    letter-spacing: 0.2em;
+  }
+  .purelane-navpill {
+    gap: 10px;
+    padding: 8px 10px;
+  }
+}
+
+/* ---------- MOBILE MENU DRAWER ---------- */
+.purelane-mobile-drawer {
+  position: fixed;
+  top: 90px;
+  left: 14px;
+  right: 14px;
+  border-radius: 24px;
+  background: var(--pl-g-bg, linear-gradient(158deg, rgba(255,255,255,.94), rgba(236,230,247,.88)));
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid var(--pl-g-line, rgba(75, 58, 143, 0.16));
+  box-shadow: 0 26px 74px rgba(18, 12, 34, 0.22);
+  padding: 24px 20px;
+  z-index: 49;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transform: translateY(-20px) scale(0.96);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s 0.35s;
+}
+
+.purelane-mobile-drawer.open {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  visibility: visible;
+  transition: opacity 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), visibility 0s;
+}
+
+.purelane-mobile-drawer a {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pl-surface, #17102b);
+  text-decoration: none;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(75, 58, 143, 0.08);
+}
+
+/* ---------- RIGHT SECTION PROGRESS RAIL ---------- */
+.purelane-progress-rail {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 44;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 1180px) {
+  .purelane-progress-rail {
+    display: flex;
+  }
+}
+
+.purelane-progress-rail a {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(75, 58, 143, 0.24);
+  transition: 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  display: block;
+}
+
+.purelane-progress-rail a.on {
+  background: #b8701c;
+  box-shadow: 0 0 0 5px rgba(201, 118, 29, 0.16);
+  height: 22px;
+  border-radius: 999px;
+}
+
+/* ---------- FOCUS VISIBLE ---------- */
+.purelane-header__section :focus-visible {
+  outline: 2px solid #4f7d10;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .purelane-ticker__track {
+    animation: none !important;
+  }
+  .purelane-mobile-drawer {
+    transition: none !important;
+  }
+  .purelane-mobile-drawer.open {
+    transition: none !important;
+  }
+}
+

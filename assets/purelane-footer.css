@@ -1,0 +1,179 @@
+/* ==========================================================================
+   PURELANE FOOTER & STICKY CTA — Scoped Styles
+   Reproduces the footer and bottom mobile sticky bar
+   from the reference prototype in V2 Sunlit Light theme.
+   ========================================================================== */
+
+.purelane-footer {
+  --pl-ink: #f4f0fb;
+  --pl-deep: #e2daf3;
+  --pl-brand: #4b3a8f;
+  --pl-paper: #241a3d;
+  --pl-paper-2: rgba(36, 26, 61, 0.78);
+  --pl-paper-3: rgba(36, 26, 61, 0.56);
+  --pl-accent: #b8701c;
+  --pl-accent-2: #c9761d;
+  --pl-surface: #17102b;
+  --pl-sec-y: 34px;
+  --pl-maxw: 1180px;
+  position: relative;
+  z-index: 2;
+  margin-top: var(--pl-sec-y);
+  padding: 44px 0 30px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.60), rgba(236, 230, 247, 0.70));
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-top: 1px solid rgba(75, 58, 143, 0.14);
+  box-sizing: border-box;
+}
+
+@media (max-width: 760px) {
+  .purelane-footer {
+    padding: 34px 0 24px;
+    --pl-sec-y: 22px;
+  }
+}
+
+.purelane-footer__wrap {
+  max-width: var(--pl-maxw);
+  margin: 0 auto;
+  padding: 0 18px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.purelane-fgrid {
+  display: grid;
+  gap: 28px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 760px) {
+  .purelane-fgrid {
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  }
+}
+
+.purelane-fcol .purelane-brand {
+  margin-bottom: 16px;
+}
+
+.purelane-fcol h5 {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pl-accent, #b8701c);
+  margin-bottom: 14px;
+  margin-top: 0;
+}
+
+.purelane-fcol a,
+.purelane-fcol p {
+  display: block;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 13.5px;
+  color: var(--pl-paper-2, rgba(36, 26, 61, 0.78));
+  margin-bottom: 9px;
+  margin-top: 0;
+  text-decoration: none;
+  transition: color 0.25s, transform 0.25s;
+}
+
+.purelane-fcol a:hover {
+  color: var(--pl-surface, #17102b);
+  transform: translateX(3px);
+}
+
+.purelane-fbot {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(75, 58, 143, 0.10);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 11.5px;
+  color: var(--pl-paper-3, rgba(36, 26, 61, 0.56));
+}
+
+/* ---------- STICKY BOTTOM MOBILE CTA ---------- */
+.purelane-sticky {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 48;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(75, 58, 143, 0.16);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.purelane-sticky .lbl {
+  line-height: 1.2;
+}
+
+.purelane-sticky .lbl b {
+  display: block;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--pl-surface, #17102b);
+}
+
+.purelane-sticky .lbl span {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 10.5px;
+  color: var(--pl-paper-3, rgba(36, 26, 61, 0.56));
+}
+
+.purelane-sticky .btn {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #00706a, #004b46);
+  color: #f4fdf6;
+  border: none;
+  box-shadow: 0 12px 26px rgba(0, 80, 74, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  text-decoration: none;
+}
+
+@media (min-width: 960px) {
+  .purelane-sticky {
+    display: none;
+  }
+}
+
+/* ---------- FOCUS VISIBLE ---------- */
+.purelane-footer :focus-visible {
+  outline: 2px solid #4f7d10;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .purelane-fcol a {
+    transition: none;
+  }
+}

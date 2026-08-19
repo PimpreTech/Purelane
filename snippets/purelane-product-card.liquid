@@ -1,0 +1,136 @@
+{%- comment -%}
+  Renders a Purelane product card.
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (required)
+  - show_rating: {Boolean} Show product rating (optional, default: true)
+  - delay_class: {String} Stagger delay class for scroll reveal e.g. 'rv-d1' (optional)
+  - show_badge: {Boolean} Show badge pill (optional, default: true)
+
+  Usage:
+  {% render 'purelane-product-card', card_product: product, delay_class: 'rv-d1' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign show_rating = show_rating | default: true
+  assign show_badge = show_badge | default: true
+  assign is_sold_out = false
+  unless card_product.available
+    assign is_sold_out = true
+  endunless
+-%}
+
+<article class="pl-card rv{% if delay_class != blank %} {{ delay_class }}{% endif %}" data-product-id="{{ card_product.id }}">
+  <a href="{{ card_product.url }}" class="pl-card__shot" aria-label="{{ card_product.title | escape }}">
+    {%- if show_badge -%}
+      {%- if is_sold_out -%}
+        <span class="pl-card__pill pl-card__pill--soldout">Sold out</span>
+      {%- elsif card_product.tags contains 'bestseller' or card_product.tags contains 'Best seller' or card_product.tags contains 'best-seller' or card_product.tags contains 'Best Seller' -%}
+        <span class="pl-card__pill">Best seller</span>
+      {%- elsif card_product.tags contains 'toprated' or card_product.tags contains 'Top rated' or card_product.tags contains 'top-rated' or card_product.tags contains 'Top Rated' -%}
+        <span class="pl-card__pill">Top rated</span>
+      {%- elsif card_product.tags contains 'new' or card_product.tags contains 'New' -%}
+        <span class="pl-card__pill">New</span>
+      {%- elsif card_product.compare_at_price > card_product.price -%}
+        <span class="pl-card__pill">Sale</span>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if card_product.featured_media != blank -%}
+      {%- assign alt_text = card_product.featured_media.alt | default: card_product.title | escape -%}
+      {{
+        card_product.featured_media
+        | image_url: width: 320
+        | image_tag:
+          class: 'pl-card__img',
+          loading: 'lazy',
+          alt: alt_text,
+          widths: '160, 240, 320',
+          sizes: '(max-width: 760px) 140px, 200px'
+      }}
+    {%- else -%}
+      {%- comment -%} Fallback vector bottle matching the reference design for products without an image {%- endcomment -%}
+      <svg viewBox="0 0 130 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+        <defs>
+          <linearGradient id="plFB-{{ card_product.id | default: 'def' }}" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#ffffff" stop-opacity=".10"/>
+            <stop offset=".18" stop-color="#ffffff" stop-opacity=".38"/>
+            <stop offset=".5" stop-color="#dff3e4" stop-opacity=".10"/>
+            <stop offset=".82" stop-color="#ffffff" stop-opacity=".22"/>
+            <stop offset="1" stop-color="#9fc7b4" stop-opacity=".32"/>
+          </linearGradient>
+          <linearGradient id="plFL-{{ card_product.id | default: 'def' }}" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#04756e"/>
+            <stop offset=".55" stop-color="#4b3a8f"/>
+            <stop offset="1" stop-color="#013f3d"/>
+          </linearGradient>
+          <linearGradient id="plFC-{{ card_product.id | default: 'def' }}" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#8fa89b"/>
+            <stop offset=".22" stop-color="#eef6ef"/>
+            <stop offset="1" stop-color="#7d938c"/>
+          </linearGradient>
+        </defs>
+        <ellipse cx="65" cy="190" rx="40" ry="7" fill="#01201c" opacity=".5"/>
+        <path d="M40 60V48c0-7 5-12 12-12h13c8 0 13 6 13 13v11Z" fill="url(#plFC-{{ card_product.id | default: 'def' }})"/>
+        <path d="M65 37c11-1 19 3 25 10 3 4 2 9-2 10l-20 3Z" fill="#cfdcd2"/>
+        <path d="M14 44h27v9H19c-4 0-6-2-6-4s1-5 1-5Z" fill="#cfdcd2"/>
+        <path d="M44 52c-7 3-11 9-10 16 1 6 5 10 12 10v-6c-4 0-6-2-6-5s2-6 5-7Z" fill="#cfdcd2"/>
+        <rect x="38" y="56" width="42" height="7" rx="3" fill="#a8bdb2"/>
+        <rect x="41" y="62" width="36" height="16" rx="4" fill="url(#plFC-{{ card_product.id | default: 'def' }})"/>
+        <path d="M28 96c0-11 6-18 15-24v-8h33v8c9 6 15 13 15 24v62c0 12-8 20-21 20H49c-13 0-21-8-21-20Z" fill="url(#plFB-{{ card_product.id | default: 'def' }})" stroke="rgba(255,255,255,.4)" stroke-width="1.4"/>
+        <rect x="31" y="112" width="66" height="60" rx="6" fill="url(#plFL-{{ card_product.id | default: 'def' }})"/>
+        <rect x="31" y="112" width="66" height="60" rx="6" fill="none" stroke="rgba(236,230,247,.26)" stroke-width="1"/>
+        <g transform="translate(58 120) scale(.5)" fill="none" stroke="#f0a03c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 21c0-6.5 3.5-11 8-12.5C20 15 16.5 20 12 21Z"/>
+          <path d="M12 21C12 14.5 8.5 10 4 8.5 4 15 7.5 20 12 21Z"/>
+        </g>
+        <text x="64" y="140" text-anchor="middle" font-family="Outfit, sans-serif" font-size="8.6" font-weight="800" letter-spacing=".7" fill="#faf7fd">PURELANE</text>
+        <line x1="42" y1="146" x2="86" y2="146" stroke="#f0a03c" stroke-width=".9" opacity=".85"/>
+        <text x="64" y="156" text-anchor="middle" font-family="Inter, sans-serif" font-size="6.4" font-weight="700" letter-spacing="1.1" fill="#ece6f7">HOMECARE</text>
+        <text x="64" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="6.4" font-weight="700" letter-spacing="1.1" fill="#ece6f7">CLEANER</text>
+        <text x="64" y="171" text-anchor="middle" font-family="Inter, sans-serif" font-size="4.8" font-weight="600" letter-spacing=".9" fill="rgba(236,230,247,.7)">500 ML</text>
+        <rect x="36" y="98" width="6" height="72" rx="3" fill="#ffffff" opacity=".3"/>
+        <rect x="86" y="102" width="4" height="64" rx="2" fill="#ffffff" opacity=".18"/>
+      </svg>
+    {%- endif -%}
+  </a>
+
+  <h4 class="pl-card__title">
+    <a href="{{ card_product.url }}">{{ card_product.title }}</a>
+  </h4>
+
+  {%- if show_rating -%}
+    {%- liquid
+      assign rating_val = card_product.metafields.reviews.rating.value.rating | default: 4.8
+      assign rating_count = card_product.metafields.reviews.rating_count.value | default: 237
+    -%}
+    <div class="pl-card__rate">
+      <b>★ {{ rating_val | round: 1 }}</b> · {{ rating_count }} reviews
+    </div>
+  {%- endif -%}
+
+  <div class="pl-card__pr">
+    <strong>{{ card_product.price | money_without_trailing_zeros }}</strong>
+    {%- if card_product.compare_at_price > card_product.price -%}
+      <s>{{ card_product.compare_at_price | money_without_trailing_zeros }}</s>
+      {%- assign savings = card_product.compare_at_price | minus: card_product.price | times: 100.0 | divided_by: card_product.compare_at_price | round -%}
+      <em>{{ savings }}% off</em>
+    {%- endif -%}
+  </div>
+
+  {%- form 'product', card_product, class: 'pl-card__form' -%}
+    <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
+    <button
+      type="submit"
+      name="add"
+      class="pl-btn pl-btn--ghost pl-btn--sm"
+      {% unless card_product.available %}disabled aria-disabled="true"{% endunless %}
+    >
+      {%- if card_product.available -%}
+        Add to cart
+      {%- else -%}
+        Sold out
+      {%- endif -%}
+    </button>
+  {%- endform -%}
+</article>
