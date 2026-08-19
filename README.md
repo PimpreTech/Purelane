@@ -1,3 +1,32 @@
+# Purelane Shopify Theme (Troopod AI Product Engineer Assessment)
+
+> High-performance, modular Shopify 2.0 theme replicating the Purelane prototype, built on Dawn with **0 Theme Check errors**.
+
+---
+
+## 🚀 Quick Start / Localhost Preview
+
+### Option 1: Live Preview (No installation required)
+- **Shareable Preview URL:** [https://purelane-troopod-le6trmjj.myshopify.com/?preview_theme_id=160026624199](https://purelane-troopod-le6trmjj.myshopify.com/?preview_theme_id=160026624199)
+- **Storefront Password:** `pawcah`
+
+### Option 2: Run Locally via Shopify CLI
+1. Ensure [Shopify CLI](https://shopify.dev/docs/themes/tools/cli) is installed and authenticated.
+2. In this directory, run:
+   ```bash
+   shopify theme dev --store purelane-troopod-le6trmjj.myshopify.com
+   ```
+3. Open your browser at **`http://127.0.0.1:9292`**.
+
+---
+
+## 📋 Documentation
+- [`SUBMISSION_NOTES.md`](SUBMISSION_NOTES.md) — Architecture, section decomposition, edge cases, and AI workflow.
+- [`FINAL_QA.md`](FINAL_QA.md) — Full QA report (Theme check, accessibility, responsive testing).
+- [`SUBMISSION_INFO.md`](SUBMISSION_INFO.md) — Submission credentials and environment links.
+
+---
+
 # Dawn
 
 [![Build status](https://github.com/shopify/dawn/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Shopify/dawn/actions/workflows/ci.yml?query=branch%3Amain)

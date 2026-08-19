@@ -6,7 +6,7 @@ https://purelane-troopod-le6trmjj.myshopify.com
 
 ## Dev Store Password
 
-[ENTER PASSWORD]
+pawcah
 
 ## GitHub Repository
 
